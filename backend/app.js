@@ -17,7 +17,8 @@ const app = express();
 const port = Number(process.env.PORT);
 
 // Use CORS middleware
-app.use(corsMiddleware);
+//app.use(corsMiddleware);
+app.use(cors);
 // Use logger middleware
 app.use(loggerMiddleware);
 app.use(rateLimitMiddleware);
