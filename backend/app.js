@@ -1,6 +1,7 @@
 const express = require('express');
 const setupSwagger = require('./swagger');
 require("dotenv").config();
+const cors = require('cors');
 
 const helmet = require('helmet');
 const corsMiddleware = require('./middleware/cors');
@@ -18,7 +19,7 @@ const port = Number(process.env.PORT);
 
 // Use CORS middleware
 //app.use(corsMiddleware);
-app.use(cors);
+app.use(cors());
 // Use logger middleware
 app.use(loggerMiddleware);
 app.use(rateLimitMiddleware);
