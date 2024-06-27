@@ -1,0 +1,185 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl"] // # <---- important to support Prisma Query engine in Alpine linux, otherwise "PrismaClientInitializationError2 [PrismaClientInitializationError]: Query engine binary for current platform "linux-musl" could not be found."
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model AjaxUser {
+  id              Int             @id @default(autoincrement())
+  user_id         String          @unique
+  user_role       String?
+  name            String?
+  email           String          @unique
+  password        String
+  ms_hub          AjaxMsHub[]
+  user_event_code UserEventCode[]
+}
+
+model UserEventCode {
+  id             Int       @id @default(autoincrement())
+  event_code     String
+  event_id       String    @unique
+  hub_id         String
+  hub            AjaxMsHub @relation(fields: [hub_id], references: [hub_id])
+  user_id        String
+  name           String?
+  timestamp      BigInt?
+  description    String?
+  additionalData Json?
+  user           AjaxUser  @relation(fields: [user_id], references: [user_id])
+}
+
+model AjaxMsHub {
+  id               Int             @id @default(autoincrement())
+  hub_id           String          @unique
+  hub_binding_role String?
+  user_id          String?
+  user             AjaxUser?       @relation(fields: [user_id], references: [user_id])
+  hub              AjaxHub?
+  user_event_code  UserEventCode[]
+}
+
+model AjaxHub {
+  id                Int            @id @default(autoincrement())
+  hub_id            String         @unique
+  ms_hub            AjaxMsHub      @relation(fields: [hub_id], references: [hub_id])
+  name              String?
+  cellular_signal   String?
+  connection        Boolean?
+  battery_level     Int?
+  battery_state     String?
+  ethernet_ip       String?
+  ethernet_subnet   String?
+  ethernet_gateway  String?
+  ethernet_dns      String?
+  sim1_number       String?
+  sim2_number       String?
+  active_sim_card   Int?
+  average_noise     Int?
+  smoke             AjaxMsSmoke[]
+  hub_event_codes   HubEventCode[]
+  installation_date DateTime?
+}
+
+model HubEventCode {
+  id          Int     @id @default(autoincrement())
+  event_code  String
+  event_id    String  @unique
+  hub_id      String
+  hub_name    String?
+  timestamp   BigInt?
+  description String?
+  hub         AjaxHub @relation(fields: [hub_id], references: [hub_id])
+}
+
+model FloorPlan {
+  id           Int     @id @default(autoincrement())
+  name         String?
+  floor        String?
+  img          String?
+  width        Float?
+  height       Float?
+  description  String?
+  zone         Zone[]
+  notify       Boolean @default(false)
+  alert        Boolean @default(false)
+  alert_levels Int?
+}
+
+model Zone {
+  id            Int          @id @default(autoincrement())
+  room_id       String       @unique
+  name          String?
+  description   String?
+  location      String?
+  x_axis        Int?
+  y_axis        Int?
+  img_url       String?
+  ms_smoke      AjaxMsSmoke?
+  floor_plan_id Int?
+  floor_plan    FloorPlan?   @relation(fields: [floor_plan_id], references: [id])
+}
+
+model AjaxMsSmoke {
+  id          Int        @id @default(autoincrement())
+  device_id   String     @unique
+  device_type String?
+  device_name String?
+  room_id     String     @unique
+  group_id    String?
+  color       String?
+  online      Boolean?
+  hub_id      String?
+  zone        Zone?      @relation(fields: [room_id], references: [room_id])
+  hub         AjaxHub?   @relation(fields: [hub_id], references: [hub_id])
+  smoke       AjaxSmoke?
+}
+
+model AjaxSmoke {
+  id                     Int              @id @default(autoincrement())
+  device_id              String           @unique
+  device_name            String           @unique
+  ms_smoke               AjaxMsSmoke      @relation(fields: [device_id], references: [device_id])
+  temp                   Float?
+  signal                 String?
+  battery_level          Int?
+  temp_alarm             String?
+  temp_alarm_enable      String?
+  temp_diff_alarm_enable String?
+  temp_high_diff_alarm   String?
+  co_alarm               String?
+  co_alarm_enable        String?
+  critical_co_alarm      String?
+  critical_smoke_alarm   String?
+  smoke_alarm            String?
+  steam_alarm            String?
+  installation_date      BigInt?
+  sensor_event_codes     SmokeEventCode[]
+}
+
+model SmokeEventCode {
+  id          Int       @id @default(autoincrement())
+  event_code  String
+  event_id    String    @unique
+  device_id   String
+  smoke       AjaxSmoke @relation(fields: [device_id], references: [device_id])
+  device_name String?
+  timestamp   BigInt?
+  description String?
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String?   
+  roleId    Int 
+  role      Role     @relation(fields: [roleId], references: [id])
+  groupId   Int     
+  group     Group    @relation(fields: [groupId], references: [id])
+  email     String   @unique
+  password  String
+  image     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Role {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String?
+  users       User[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime? @updatedAt
+}
+
+model Group {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  description String?
+  users     User[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime? @updatedAt
+}

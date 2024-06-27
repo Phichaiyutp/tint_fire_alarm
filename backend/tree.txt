@@ -1,0 +1,19 @@
+Folder PATH listing for volume Data
+Volume serial number is 7AF6-3191
+D:.
++---Config
++---Controllers
+|   +---Ajax
+|   +---Auth
+|   \---Dashboard
++---Middleware
++---Models
+|   \---prisma
+|       \---migrations
+|           +---20240614062512_init
+|           \---20240614073546_init
++---Routes
+|   +---Ajax
+|   +---Auth
+|   \---Dashboard
+\---Utility
