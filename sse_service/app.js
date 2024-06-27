@@ -1,9 +1,4 @@
-import {
-  SQSClient,
-  GetQueueUrlCommand,
-  ReceiveMessageCommand,
-  DeleteMessageCommand,
-} from "@aws-sdk/client-sqs";
+import {SQSClient,GetQueueUrlCommand,ReceiveMessageCommand,DeleteMessageCommand,} from "@aws-sdk/client-sqs";
 import express from "express";
 import cors from "cors";
 import DecodeMsg from "./decodeMsg.js";
