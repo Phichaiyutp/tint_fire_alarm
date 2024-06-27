@@ -1,4 +1,4 @@
-const prisma = require("../../models/prisma/prisma");
+const prisma = require("../../prisma/prisma");
 const axios = require("axios");
 const { LoginInfo, Login } = require("./login.controllers");
 require("dotenv").config();

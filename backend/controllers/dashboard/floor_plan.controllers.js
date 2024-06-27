@@ -1,4 +1,4 @@
-const prisma = require("../../models/prisma/prisma");
+const prisma = require("../../prisma/prisma");
 const { check, validationResult } = require("express-validator");
 
 const FloorPlanUpdate = async (req, res) => {

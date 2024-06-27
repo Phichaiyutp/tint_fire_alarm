@@ -1,4 +1,4 @@
-const prisma = require("../../models/prisma/prisma");
+const prisma = require("../../prisma/prisma");
 const arraySort = require('array-sort');
 
 const SelfTestById = async (req, res) => {

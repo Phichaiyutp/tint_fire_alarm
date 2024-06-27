@@ -1,6 +1,6 @@
 const { writeFileSync,readFileSync } = require("fs");
 const axios = require("axios");
-const prisma = require("../../models/prisma/prisma");
+const prisma = require("../../prisma/prisma");
 const ajaxKeyPath = require.resolve("../../config/ajax.config.json");
 require("dotenv").config();
 const ajaxUrl = process.env.AJAX_URL;

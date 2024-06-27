@@ -1,7 +1,7 @@
 const { check, validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto-js");
-const prisma = require("../../models/prisma/prisma");
+const prisma = require("../../prisma/prisma");
 require("dotenv").config();
 
 const jwtSecret = process.env.JWT_SECRET;
