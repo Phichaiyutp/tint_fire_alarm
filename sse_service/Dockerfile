@@ -1,26 +1,16 @@
-FROM node:alpine3.20
+FROM node:alpine3.20 AS build
 
-# Create the app directory and set permissions
-RUN mkdir -p /home/node/app && chown -R node:node /home/node/app
-
-# Switch to the app directory
-WORKDIR /home/node/app
-
-# Copy package.json and package-lock.json and change ownership
-COPY package*.json ./
-RUN chown node:node package*.json
-
-# Switch to the 'node' user
-USER node
+WORKDIR /usr/src/app
+COPY package.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm install --no-optional
 
-# Copy the rest of the application code and change ownership
-COPY --chown=node:node . .
+# Copy the rest of the application code
+COPY . .
 
 # Expose the application port
 EXPOSE 80
 
-# Start the application
-CMD ["node", "app.js"]
+# Command to start the application
+CMD ["npm", "start"]
