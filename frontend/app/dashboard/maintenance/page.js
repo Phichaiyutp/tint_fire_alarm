@@ -10,7 +10,7 @@ import autoTable from 'jspdf-autotable'
 import { getCookie } from "cookies-next";
 
 export default function Maintenance() {
-  const [selectedSite, setSelectedSite] = useState(1);
+  const [selectedSite, setSelectedSite] = useState(0);
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState({ sortName: "device_name", sort: "asc" });
@@ -20,6 +20,7 @@ export default function Maintenance() {
   };
 
   useEffect(() => {
+    if (selectedSite != 0){
     const query = new URLSearchParams({
       search,
       sortName: sort.sortName,
@@ -44,6 +45,7 @@ export default function Maintenance() {
         setData([]);
         console.error("Error:", error);
       });
+    }
   }, [selectedSite, search, sort]);
 
   const handleSorting = (sortName) => {

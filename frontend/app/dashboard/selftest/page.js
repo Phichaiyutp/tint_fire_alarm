@@ -7,7 +7,7 @@ import Table from "../../../app/components/dashboard/selftest/table";
 import { getCookie } from "cookies-next";
 
 export default function Page() {
-  const [selectedSite, setSelectedSite] = useState(1);
+  const [selectedSite, setSelectedSite] = useState(0);
   const [modalDeviceId, setModalDeviceId] = useState(null);
   const [modalDeviceName, setModalDeviceName] = useState("");
   const [search, setSearch] = useState("");
@@ -61,17 +61,19 @@ export default function Page() {
   };
 
   useEffect(() => {
-    if (showFloorPlan) {
-      const floorPlanUrl = `${process.env.NEXT_PUBLIC_BACKEND_API}/api/dashboard/floorplan/${selectedSite}`;
-      fetchData(floorPlanUrl);
-    } else {
-      const query = new URLSearchParams({
-        search,
-        sortName: sort.sortName,
-        sort: sort.sort,
-      }).toString();
-      const tableUrl = `${process.env.NEXT_PUBLIC_BACKEND_API}/api/dashboard/selftest/${selectedSite}?${query}`;
-      fetchTableData(tableUrl);
+    if (selectedSite != 0) {
+      if (showFloorPlan) {
+        const floorPlanUrl = `${process.env.NEXT_PUBLIC_BACKEND_API}/api/dashboard/floorplan/${selectedSite}`;
+        fetchData(floorPlanUrl);
+      } else {
+        const query = new URLSearchParams({
+          search,
+          sortName: sort.sortName,
+          sort: sort.sort,
+        }).toString();
+        const tableUrl = `${process.env.NEXT_PUBLIC_BACKEND_API}/api/dashboard/selftest/${selectedSite}?${query}`;
+        fetchTableData(tableUrl);
+      }
     }
   }, [showFloorPlan, selectedSite, sort, search]);
 
@@ -172,9 +174,9 @@ export default function Page() {
                 alt="loading"
                 className="block md:h-[35dvh] md:w-[30lvw]"
               />
-            ) : floorPlanData && floorPlanData.img_b64 ? (
+            ) : floorPlanData && floorPlanData.img ? (
               <img
-                src={floorPlanData.img_b64}
+                src={floorPlanData.img}
                 width={floorPlanData.width}
                 height={floorPlanData.height}
                 alt={floorPlanData.description}
