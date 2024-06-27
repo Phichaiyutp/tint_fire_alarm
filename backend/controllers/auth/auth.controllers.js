@@ -25,11 +25,19 @@ const signup = async (req, res) => {
   const hashedPassword = crypto.SHA256(password).toString();
 
   try {
+    const existingUser = await prisma.user.findUnique({
+      where: { email: email },
+    });
+
+    if (existingUser) {
+      return res.status(400).json({ error: "Email already exists" });
+    }
+    
     await prisma.user.create({
       data: {
         name: name,
         email: email,
-        password: hashedPassword, // Storing hashed password
+        password: hashedPassword,
         roleId: 1,
         groupId: 1,
         image: image,
