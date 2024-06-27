@@ -13,7 +13,7 @@ export default function SelectSite({ onChange, value }) {
       try {
         const key = getCookie('access_token');
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BASEPATH}/api/dashboard/floorplan/notify`,
+          `${process.env.NEXT_PUBLIC_BACKEND_API}/api/dashboard/floorplan/notify`,
           {
             method: "GET",
             headers: {

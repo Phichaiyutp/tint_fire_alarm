@@ -9,7 +9,7 @@ const smokeControllers = require("../controllers/ajax/smoke.controllers");
 const zoneControllers = require("../controllers/ajax/zone.controllers");
 
 async function main() {
-/*   // Create roles
+  // Create roles
   const roleGuest = await prisma.role.create({
     data: {
       name: "guest",
@@ -98,7 +98,7 @@ async function main() {
       height: 0,
       description: "FloorPlan",
     },
-  }); */
+  });
   // Seed Zone
   await zoneControllers.ZoneRegister();
   // Seed AjaxMsHub
